@@ -7,6 +7,7 @@ const P = require('bluebird');
 const filterP = require('../hofp').filterP;
 const mapP = require('../hofp').mapP;
 const negateCondition = require('../hofp').negateCondition;
+const R = require('ramda');
 
 describe("filterP", () => {
 
@@ -31,5 +32,14 @@ describe("mapP", () => {
     it("should map values using promise as map function", () =>
         mapP(mapFunction, [1, 2, 3])
             .then(result => assert.deepEqual(result, [1, 4, 9]))
+    );
+
+    it("should work together with ramda", () => {
+            P.resolve([1, 2, 3, 4])
+                .then(R.map(value => value * value))
+                .then(R.curry(mapP)(mapFunction))
+                .then(R.filter(n => n % 2 === 0))
+                .then(result => assert.deepEqual(result, [16, 256]))
+        }
     );
 });
