@@ -5,12 +5,12 @@
 
 ## API
 ### filterP
-`(Promise filterCondition → Boolean, Iterable\<any>) → Promise → Iterable\<any>`
+`(Promise filterCondition → Boolean, Iterable<any>) → Promise → Iterable<any>`
 
 Sequential filter.
 
 ### mapP
-`(Promise mapFunction → any, Iterable\<any>) → Promise → Iterable\<any>`
+`(Promise mapFunction → any, Iterable<any>) → Promise → Iterable<any>`
 
 Sequential map.
 
