@@ -26,7 +26,7 @@ const conditionReturningPromise = value =>
     P.resolve().then(() => value === "a" || value === "c");
 
 filterP(conditionReturningPromise, ["a", "b", "c", "d", "e"])
-    .then(result => assert.deepEqual(result, ["a", "c"]))
+    .then(result => assert.deepEqual(result, ["b", "d", "e"]))
 ```
 
 With negateCondition
