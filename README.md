@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/kozakvoj/hofp.svg?branch=master)](https://travis-ci.org/kozakvoj/hofp)
 
+## Dependencies
+- Node.js 7.4+
+- bluebird
+- ramda
 
 ## API
 ### filterP
