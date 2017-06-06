@@ -4,9 +4,9 @@ const describe = require("mocha").describe;
 const assert = require("assert");
 const it = require("mocha").it;
 const P = require('bluebird');
-const filterP = require('../hofp').filterP;
-const mapP = require('../hofp').mapP;
-const negateCondition = require('../hofp').negateCondition;
+const filterP = require('../index').filterP;
+const mapP = require('../index').mapP;
+const negateCondition = require('../index').negateCondition;
 const R = require('ramda');
 
 describe("filterP", () => {
