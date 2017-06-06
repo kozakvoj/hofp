@@ -5,8 +5,8 @@ const assert = require("assert");
 const it = require("mocha").it;
 const P = require('bluebird');
 const R = require('ramda');
-const filterP = require('./hofp').filterP;
-const negateCondition = require('./hofp').negateCondition;
+const filterP = require('../hofp').filterP;
+const negateCondition = require('../hofp').negateCondition;
 
 describe("promisedFilter", () => {
 
