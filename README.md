@@ -45,7 +45,7 @@ mapP(mapFunction, [1, 2, 3])
     .then(result => assert.deepEqual(result, [1, 4, 9]))
 ```
 
-Chaining with Ramda functions.
+Chaining with Ramda
 ```javascript
 const mapFunction = value => P.resolve().then(() => value * value);
 
