@@ -1,5 +1,5 @@
 {
-  "name": "blacklist-analytics",
+  "name": "hofp",
   "version": "0.0.1",
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha ./src/test/**/*.js"
