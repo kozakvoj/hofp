@@ -4,23 +4,23 @@ const describe = require("mocha").describe;
 const assert = require("assert");
 const it = require("mocha").it;
 const P = require('bluebird');
-const filterP = require('../index').filterP;
+const rejectP = require('../index').rejectP;
 const mapP = require('../index').mapP;
 const negateCondition = require('../index').negateCondition;
 const R = require('ramda');
 
-describe("filterP", () => {
+describe("rejectP", () => {
 
     const conditionReturningPromise = value =>
         P.resolve().then(() => value === "a" || value === "c");
 
-    it("should filter values using promise as condition", () =>
-        filterP(conditionReturningPromise, ["a", "b", "c", "d", "e"])
+    it("should reject values using promise as condition", () =>
+        rejectP(conditionReturningPromise, ["a", "b", "c", "d", "e"])
             .then(result => assert.deepEqual(result, ["b", "d", "e"]))
     );
 
     it("should work with negative condition too", () =>
-        filterP(negateCondition(conditionReturningPromise), ["a", "b", "c", "d", "e"])
+        rejectP(negateCondition(conditionReturningPromise), ["a", "b", "c", "d", "e"])
             .then(result => assert.deepEqual(result, ["a", "c"]))
     );
 });
