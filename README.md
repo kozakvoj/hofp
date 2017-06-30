@@ -8,6 +8,10 @@
 - ramda
 
 ## API
+
+### reduceP
+`(Promise filterCondition → Boolean, Iterable<any>) → Promise → Iterable<any>`
+
 ### filterP
 `(Promise filterCondition → Boolean, Iterable<any>) → Promise → Iterable<any>`
 
@@ -18,25 +22,26 @@ Sequential filter.
 
 Sequential map.
 
-### negateCondition
-`(Promise<any> condition → Boolean) → !Promise<any> condition → Boolean`
-
 ## Usage
 
-Using filter
+```javascript
+const H = require('hofp')
+```
+
+Using reject
 
 ```javascript
 const conditionReturningPromise = value =>
     P.resolve().then(() => value === "a" || value === "c");
 
-filterP(conditionReturningPromise, ["a", "b", "c", "d", "e"])
+H.rejectP(conditionReturningPromise, ["a", "b", "c", "d", "e"])
     .then(result => assert.deepEqual(result, ["b", "d", "e"]))
 ```
 
-With negateCondition
+With filter
 
 ```javascript
-filterP(negateCondition(conditionReturningPromise), ["a", "b", "c", "d", "e"])
+H.filterP(conditionReturningPromise, ["a", "b", "c", "d", "e"])
     .then(result => assert.deepEqual(result, ["a", "c"]))
 ```
 
@@ -45,7 +50,7 @@ Using map
 ```javascript
 const mapFunction = value => P.resolve().then(() => value * value);
 
-mapP(mapFunction, [1, 2, 3])
+H.mapP(mapFunction, [1, 2, 3])
     .then(result => assert.deepEqual(result, [1, 4, 9]))
 ```
 

@@ -3,7 +3,11 @@
 const P = require("bluebird");
 const R = require("ramda");
 
-module.exports = {rejectP, mapP, negateCondition};
+module.exports = {filterP, rejectP, mapP};
+
+async function filterP(condition, values) {
+    return rejectP(negateCondition(condition), values)
+}
 
 async function rejectP(condition, values) {
     const prepCondition = value => condition(value)
