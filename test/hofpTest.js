@@ -6,6 +6,7 @@ const it = require("mocha").it;
 const P = require('bluebird');
 const H = require('../index');
 const R = require('ramda');
+const sleep = require('sleep-promise');
 
 describe("filterP", () => {
 
@@ -38,12 +39,22 @@ describe("mapP", () => {
             .then(result => assert.deepEqual(result, [1, 4, 9]))
     );
 
-    it("should work together with ramda", () => {
-            P.resolve([1, 2, 3, 4])
-                .then(R.map(value => value * value))
-                .then(R.curry(H.mapP)(mapFunction))
-                .then(R.filter(n => n % 2 === 0))
-                .then(result => assert.deepEqual(result, [16, 256]))
-        }
+    it("should work together with ramda", () =>
+        P.resolve([1, 2, 3, 4])
+            .then(R.map(value => value * value))
+            .then(R.curry(H.mapP)(mapFunction))
+            .then(R.filter(n => n % 2 === 0))
+            .then(result => assert.deepEqual(result, [16, 256]))
     );
+
+    it("should work sequentially", () =>
+        H.mapP(sleepAndReturn, [10, 5, 1]).then(result => {
+            assert.deepEqual(result, [10, 5, 1])
+        })
+    )
 });
+
+async function sleepAndReturn(val) {
+    await sleep(val);
+    return val;
+}

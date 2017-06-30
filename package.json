@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "mocha": "^3.4.2",
-    "rewire": "latest"
+    "rewire": "latest",
+    "sleep-promise": "^2.0.0"
   }
 }
