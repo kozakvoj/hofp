@@ -34,6 +34,11 @@ describe("mapP", () => {
 
     const mapFunction = value => P.resolve().then(() => value * value);
 
+    const sleepAndReturn = async val => {
+        await sleep(val);
+        return val;
+    };
+
     it("should map values using promise as map function", () =>
         H.mapP(mapFunction, [1, 2, 3])
             .then(result => assert.deepEqual(result, [1, 4, 9]))
@@ -48,13 +53,7 @@ describe("mapP", () => {
     );
 
     it("should work sequentially", () =>
-        H.mapP(sleepAndReturn, [10, 5, 1]).then(result => {
-            assert.deepEqual(result, [10, 5, 1])
-        })
-    )
+        H.mapP(sleepAndReturn, [10, 5, 1])
+            .then(result => assert.deepEqual(result, [10, 5, 1]))
+    );
 });
-
-async function sleepAndReturn(val) {
-    await sleep(val);
-    return val;
-}
