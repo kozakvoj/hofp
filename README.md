@@ -1,4 +1,4 @@
-# hofp - Higher-order functions with promises
+# hofp - Higher-order functions for promises
 
 [![Build Status](https://travis-ci.org/kozakvoj/hofp.svg?branch=master)](https://travis-ci.org/kozakvoj/hofp)
 
