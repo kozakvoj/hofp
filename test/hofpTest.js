@@ -8,29 +8,29 @@ const H = require('../index');
 const R = require('ramda');
 const sleep = require('sleep-promise');
 
-describe("filterP", () => {
+describe("filter", () => {
 
     const conditionReturningPromise = value =>
         P.resolve().then(() => value === "a" || value === "c");
 
     it("should filter values using promise as condition", () =>
-        H.filterP(conditionReturningPromise, ["a", "b", "c", "d", "e"])
+        H.filter(conditionReturningPromise, ["a", "b", "c", "d", "e"])
             .then(result => assert.deepEqual(result, ["a", "c"]))
     );
 });
 
-describe("rejectP", () => {
+describe("reject", () => {
 
     const conditionReturningPromise = value =>
         P.resolve().then(() => value === "a" || value === "c");
 
     it("should reject values using promise as condition", () =>
-        H.rejectP(conditionReturningPromise, ["a", "b", "c", "d", "e"])
+        H.reject(conditionReturningPromise, ["a", "b", "c", "d", "e"])
             .then(result => assert.deepEqual(result, ["b", "d", "e"]))
     );
 });
 
-describe("mapP", () => {
+describe("map", () => {
 
     const mapFunction = value => P.resolve().then(() => value * value);
 
@@ -40,20 +40,20 @@ describe("mapP", () => {
     };
 
     it("should map values using promise as map function", () =>
-        H.mapP(mapFunction, [1, 2, 3])
+        H.map(mapFunction, [1, 2, 3])
             .then(result => assert.deepEqual(result, [1, 4, 9]))
     );
 
     it("should work together with ramda", () =>
         P.resolve([1, 2, 3, 4])
             .then(R.map(value => value * value))
-            .then(R.curry(H.mapP)(mapFunction))
+            .then(R.curry(H.map)(mapFunction))
             .then(R.filter(n => n % 2 === 0))
             .then(result => assert.deepEqual(result, [16, 256]))
     );
 
     it("should work sequentially", () =>
-        H.mapP(sleepAndReturn, [10, 5, 1])
+        H.map(sleepAndReturn, [10, 5, 1])
             .then(result => assert.deepEqual(result, [10, 5, 1]))
     );
 });

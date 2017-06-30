@@ -9,15 +9,15 @@
 
 ## API
 
-### reduceP
+### reduce
 `(Promise filterCondition → Boolean, Iterable<any>) → Promise → Iterable<any>`
 
-### filterP
+### filter
 `(Promise filterCondition → Boolean, Iterable<any>) → Promise → Iterable<any>`
 
 Sequential filter.
 
-### mapP
+### map
 `(Promise mapFunction → any, Iterable<any>) → Promise → Iterable<any>`
 
 Sequential map.
@@ -34,14 +34,14 @@ Using reject
 const conditionReturningPromise = value =>
     P.resolve().then(() => value === "a" || value === "c");
 
-H.rejectP(conditionReturningPromise, ["a", "b", "c", "d", "e"])
+H.reject(conditionReturningPromise, ["a", "b", "c", "d", "e"])
     .then(result => assert.deepEqual(result, ["b", "d", "e"]))
 ```
 
 With filter
 
 ```javascript
-H.filterP(conditionReturningPromise, ["a", "b", "c", "d", "e"])
+H.filter(conditionReturningPromise, ["a", "b", "c", "d", "e"])
     .then(result => assert.deepEqual(result, ["a", "c"]))
 ```
 
@@ -50,7 +50,7 @@ Using map
 ```javascript
 const mapFunction = value => P.resolve().then(() => value * value);
 
-H.mapP(mapFunction, [1, 2, 3])
+H.map(mapFunction, [1, 2, 3])
     .then(result => assert.deepEqual(result, [1, 4, 9]))
 ```
 
@@ -60,7 +60,7 @@ const mapFunction = value => P.resolve().then(() => value * value);
 
 P.resolve([1, 2, 3, 4])
     .then(R.map(value => value * value))
-    .then(R.curry(mapP)(mapFunction))
+    .then(R.curry(map)(mapFunction))
     .then(R.filter(n => n % 2 === 0))
     .then(result => assert.deepEqual(result, [16, 256]))
 ```
