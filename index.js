@@ -3,7 +3,7 @@
 const P = require("bluebird");
 const R = require("ramda");
 
-module.exports = {filter, reject, map};
+module.exports = {filter, reject, map, mapv2};
 
 async function filter(condition, values) {
     return reject(negateCondition(condition), values)
@@ -19,6 +19,11 @@ async function reject(condition, values) {
 async function map(mapFunction, values) {
     const valuesToResolve = R.map(mapFunction, values);
     return await P.mapSeries(valuesToResolve, res => res);
+}
+
+async function mapv2(mapFunction, values) {
+    const valuesToResolve = R.map(mapFunction, values);
+    return await P.mapSeries(valuesToResolve, res => res());
 }
 
 function negateCondition(condition) {
