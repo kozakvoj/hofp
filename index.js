@@ -3,7 +3,7 @@
 const P = require("bluebird");
 const R = require("ramda");
 
-module.exports = {filter, reject, map, mapv2};
+module.exports = {filter, reject, map, mapv2, parallelLimit};
 
 async function filter(condition, values) {
     return reject(negateCondition(condition), values)
@@ -24,6 +24,13 @@ async function map(mapFunction, values) {
 async function mapv2(mapFunction, values) {
     const valuesToResolve = R.map(mapFunction, values);
     return await P.mapSeries(valuesToResolve, res => res());
+}
+
+async function parallelLimit(fun, values, limit) {
+    const valuesToResolve = R.map(fun, values);
+    const splitValues = R.splitEvery(limit, valuesToResolve);
+    const functionsToResolve = R.map(batch => () => mapv2(val => () => val(), batch))(splitValues);
+    return P.mapSeries(functionsToResolve, res => res())
 }
 
 function negateCondition(condition) {
