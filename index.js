@@ -26,11 +26,16 @@ async function mapv2(mapFunction, values) {
     return await P.mapSeries(valuesToResolve, res => res());
 }
 
-async function parallelLimit(fun, values, limit) {
+async function parallelLimit(fun, values, limit, batchCallback = null) {
     const valuesToResolve = R.map(fun, values);
     const splitValues = R.splitEvery(limit, valuesToResolve);
     const functionsToResolve = R.map(batch => () => mapv2(val => () => val(), batch))(splitValues);
-    return P.mapSeries(functionsToResolve, res => res())
+    const splitResult = await P.mapSeries(functionsToResolve, async res => {
+        const result = await res();
+        if (batchCallback) batchCallback(result);
+        return result;
+    });
+    return R.flatten(splitResult)
 }
 
 function negateCondition(condition) {

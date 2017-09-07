@@ -59,8 +59,9 @@ describe("map", () => {
 });
 
 describe("parallelLimit", () => {
-    it("xxx", () => {
+    it("should return correct result", () => {
         const fce = nr => () => P.resolve(nr).delay(200);
-        return H.parallelLimit(fce, [11, 12, 21, 22, 31, 32], 2).then(console.log)
+        return H.parallelLimit(fce, [11, 12, 21, 22, 31, 32], 2)
+            .then(result =>  assert.deepEqual(result, [11, 12, 21, 22, 31, 32]))
     });
 });
