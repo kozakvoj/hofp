@@ -3,7 +3,7 @@
 const P = require("bluebird");
 const R = require("ramda");
 
-module.exports = {filter, reject, map, mapv2, parallelLimit};
+module.exports = {filter, reject, map, parallelLimit};
 
 async function filter(condition, values) {
     return reject(negateCondition(condition), values)
@@ -16,20 +16,17 @@ async function reject(condition, values) {
     return R.reject(R.isNil, resolvedValues)
 }
 
-async function map(mapFunction, values) {
-    const valuesToResolve = R.map(mapFunction, values);
-    return await P.mapSeries(valuesToResolve, res => res);
-}
-
-async function mapv2(mapFunction, values) {
-    const valuesToResolve = R.map(mapFunction, values);
+async function map(fun, values) {
+    const newFun = input => () => fun(input);
+    const valuesToResolve = R.map(newFun, values);
     return await P.mapSeries(valuesToResolve, res => res());
 }
 
 async function parallelLimit(fun, values, limit, batchCallback = null) {
-    const valuesToResolve = R.map(fun, values);
+    const newFun = input => () => fun(input);
+    const valuesToResolve = R.map(newFun, values);
     const splitValues = R.splitEvery(limit, valuesToResolve);
-    const functionsToResolve = R.map(batch => () => mapv2(val => () => val(), batch))(splitValues);
+    const functionsToResolve = R.map(batch => () => map(val => val(), batch))(splitValues);
     const splitResult = await P.mapSeries(functionsToResolve, async res => {
         const result = await res();
         if (batchCallback) batchCallback(result);
