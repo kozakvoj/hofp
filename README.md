@@ -54,6 +54,12 @@ H.map(mapFunction, [1, 2, 3])
     .then(result => assert.deepEqual(result, [1, 4, 9]))
 ```
 
+Using pipe
+
+```javascript
+H.pipe([asyncFce1, asyncFce2, asyncFce3], [1, 2, 3, 4]);
+```
+
 Chaining with Ramda
 ```javascript
 const mapFunction = value => P.resolve().then(() => value * value);
