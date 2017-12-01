@@ -3,7 +3,7 @@
 const P = require("bluebird");
 const R = require("ramda");
 
-module.exports = {filter, reject, map, parallelLimit, pipe};
+module.exports = {filter, reject, map, parallelLimit, retry};
 
 async function filter(condition, values) {
     return reject(negateCondition(condition), values)
@@ -35,10 +35,19 @@ async function parallelLimit(fun, values, limit, batchCallback = null) {
     return R.flatten(splitResult)
 }
 
-async function pipe(functions, values) {
-    return functions.length > 0
-        ? await pipe(R.tail(functions), await R.head(functions)(values))
-        : values
+function retry(fun, retries, timeout) {
+    return _retry(fun, retries, timeout, 1);
+
+    function _retry(fun, retries, timeout, tryCount) {
+        return P.resolve()
+            .then(fun)
+            .timeout(timeout)
+            .catch(() => {
+                if (retries > tryCount) {
+                    return _retry(fun, retries, timeout, ++tryCount);
+                }
+            })
+    }
 }
 
 function negateCondition(condition) {

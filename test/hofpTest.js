@@ -67,15 +67,10 @@ describe("parallelLimit", () => {
     });
 });
 
-describe("pipe", () => {
-    it("should return correct result", async () => {
-        const fce1 = values => P.resolve().then(() => H.map(it => it * 2, values)).delay(200);
-        const fce2 = values => P.resolve().then(() => H.map(it => it - 1, values)).delay(200);
+// describe("retry", () => {
+//     it("should return correct result", async () => {
+//         const fun = nr => P.resolve(nr).delay(2000);
+//         await H.retry(fun, 3, 1000)
+//     }).timeout(10000);
+// });
 
-        const result = await H.pipe([
-            fce1, fce2
-        ], [1, 2, 3, 4]);
-
-        assert.deepEqual(result, [ 1, 3, 5, 7 ])
-    });
-});
