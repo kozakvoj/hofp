@@ -5,11 +5,11 @@
     "test": "node ./node_modules/mocha/bin/mocha test/"
   },
   "dependencies": {
-    "bluebird": "^3.5.0",
+    "bluebird": "^3.5.1",
     "ramda": "^0.24.1"
   },
   "devDependencies": {
-    "mocha": "^3.5.0",
+    "mocha": "^3.5.3",
     "rewire": "latest",
     "sleep-promise": "^2.0.0"
   }
