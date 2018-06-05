@@ -16,15 +16,15 @@ async function reject(condition, values) {
     return R.reject(R.isNil, resolvedValues)
 }
 
-async function map(fun, values) {
-    const newFun = input => () => fun(input);
-    const valuesToResolve = R.map(newFun, values);
+async function map(fn, values) {
+    const newFn = input => () => fn(input);
+    const valuesToResolve = R.map(newFn, values);
     return await P.mapSeries(valuesToResolve, res => res());
 }
 
-async function parallelLimit(fun, values, limit, batchCallback = null) {
-    const newFun = input => () => fun(input);
-    const valuesToResolve = R.map(newFun, values);
+async function parallelLimit(fn, values, limit, batchCallback = null) {
+    const newFn = input => () => fn(input);
+    const valuesToResolve = R.map(newFn, values);
     const splitValues = R.splitEvery(limit, valuesToResolve);
     const functionsToResolve = R.map(batch => () => map(val => val(), batch))(splitValues);
     const splitResult = await P.mapSeries(functionsToResolve, async res => {
@@ -38,13 +38,13 @@ async function parallelLimit(fun, values, limit, batchCallback = null) {
 function retry(fun, retries, timeout) {
     return _retry(fun, retries, timeout, 1);
 
-    function _retry(fun, retries, timeout, tryCount) {
+    function _retry(fn, retries, timeout, tryCount) {
         return P.resolve()
-            .then(fun)
+            .then(fn)
             .timeout(timeout)
             .catch(() => {
                 if (retries > tryCount) {
-                    return _retry(fun, retries, timeout, ++tryCount);
+                    return _retry(fn, retries, timeout, ++tryCount);
                 }
             })
     }
