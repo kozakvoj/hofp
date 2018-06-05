@@ -35,8 +35,8 @@ async function parallelLimit(fn, values, limit, batchCallback = null) {
     return R.flatten(splitResult)
 }
 
-function retry(fun, retries, timeout) {
-    return _retry(fun, retries, timeout, 1);
+function retry(fn, retries, timeout) {
+    return _retry(fn, retries, timeout, 1);
 
     function _retry(fn, retries, timeout, tryCount) {
         return P.resolve()
